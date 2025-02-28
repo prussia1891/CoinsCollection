@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float dashForce = 10f;
     [SerializeField] private float dashCooldown = 1f;
+    [SerializeField] private Transform launchIndicator;
+    [SerializeField] private Camera playerCamera;
 
     private Rigidbody rb;
     private bool isGrounded;
@@ -30,6 +32,8 @@ public class Player : MonoBehaviour
         {
             DashPlayer();
         }
+
+        UpdateLaunchIndicator();
     }
 
     private void MovePlayer(Vector2 direction)
@@ -64,6 +68,20 @@ public class Player : MonoBehaviour
     private void ResetDash()
     {
         canDash = true;
+    }
+
+    private void UpdateLaunchIndicator()
+    {
+        if (launchIndicator != null && playerCamera != null)
+        {
+            Ray cameraRay = playerCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(cameraRay, out RaycastHit hit))
+            {
+                launchIndicator.position = hit.point;
+                Vector3 aimDirection = (hit.point - transform.position).normalized;
+                transform.forward = new Vector3(aimDirection.x, 0, aimDirection.z);
+            }
+        }
     }
 
     private void OnCollisionStay(Collision collision)
