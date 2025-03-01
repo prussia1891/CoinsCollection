@@ -29,6 +29,11 @@ public class InputManager : MonoBehaviour
         }
         OnMove?.Invoke(input);
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            OnSpacePressed?.Invoke();
+        }
+
         if (Input.GetKeyDown(KeyCode.R))
         {
             OnResetPressed?.Invoke();

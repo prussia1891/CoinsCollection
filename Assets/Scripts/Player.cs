@@ -1,6 +1,5 @@
-using UnityEngine;
-
-using UnityEngine;
+﻿using UnityEngine;
+using Unity.Cinemachine;
 
 public class Player : MonoBehaviour
 {
@@ -9,8 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float dashForce = 10f;
     [SerializeField] private float dashCooldown = 1f;
-    [SerializeField] private Transform launchIndicator;
-    [SerializeField] private Camera playerCamera;
+    [SerializeField] private ArrowIndicator arrowIndicator;
 
     private Rigidbody rb;
     private bool isGrounded;
@@ -20,27 +18,33 @@ public class Player : MonoBehaviour
     private void Start()
     {
         inputManager.OnMove.AddListener(MovePlayer);
+        inputManager.OnSpacePressed.AddListener(JumpPlayer);
         rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            JumpPlayer();
-        }
-
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
         {
             DashPlayer();
         }
-
-        UpdateLaunchIndicator();
     }
 
     private void MovePlayer(Vector2 direction)
     {
-        Vector3 moveDirection = new Vector3(direction.x, 0f, direction.y);
+        // 获取瞄准器的前向和右向向量
+        Vector3 arrowForward = arrowIndicator.transform.forward;
+        Vector3 arrowRight = arrowIndicator.transform.right;
+
+        // 将向量平面化到XZ平面
+        arrowForward.y = 0;
+        arrowRight.y = 0;
+        arrowForward.Normalize();
+        arrowRight.Normalize();
+
+        // 根据瞄准器方向计算移动方向
+        Vector3 moveDirection = arrowForward * direction.y + arrowRight * direction.x;
         rb.AddForce(speed * moveDirection);
     }
 
@@ -70,20 +74,6 @@ public class Player : MonoBehaviour
     private void ResetDash()
     {
         canDash = true;
-    }
-
-    private void UpdateLaunchIndicator()
-    {
-        if (launchIndicator != null && playerCamera != null)
-        {
-            Ray cameraRay = playerCamera.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(cameraRay, out RaycastHit hit))
-            {
-                launchIndicator.position = hit.point;
-                Vector3 aimDirection = (hit.point - transform.position).normalized;
-                transform.forward = new Vector3(aimDirection.x, 0, aimDirection.z);
-            }
-        }
     }
 
     private void OnCollisionStay(Collision collision)
