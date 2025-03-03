@@ -707,7 +707,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputManager: {fileID: 525354773}
-  speed: 25
+  speed: 15
   jumpForce: 10
   dashForce: 5
   dashCooldown: 1
