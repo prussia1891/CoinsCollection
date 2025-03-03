@@ -11,19 +11,19 @@
 
 ### **Instructions for Use**
 
-- Game background:
-A platform confined by four invisible walls
-There are boxes with different heights on the platform.
-Some rotating coins are scattered on the platform. Coins will disappear after being collected by the player.
+### Game background:
+- A platform confined by four invisible walls
+- There are boxes with different heights on the platform.
+- Some rotating coins are scattered on the platform. Coins will disappear after being collected by the player.
 
-- The player can:
-Look around through a third person free-look camera.
-The forward direction is determined by the direction of the camera.
-Move forward, backward, left and right through keyboard input (press W, S, A, D)
-(The Dash feature of the player is realized.
-Press the space bar to control the player to jump.
+### The player can:
+- Look around through a third person free-look camera.
+- The forward direction is determined by the direction of the camera.
+- Move forward, backward, left and right through keyboard input (press W, S, A, D)
+  (The Dash feature of the player is realized.
+- Press the space bar to control the player to jump.
 (The Double-Jumps feature of the player is realized.
-The player gains points by collecting coins.
+- The player gains points by collecting coins.
 
 
 ### **Assets**
